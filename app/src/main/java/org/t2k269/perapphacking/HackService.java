@@ -64,7 +64,6 @@ public class HackService implements IXposedHookZygoteInit, IXposedHookLoadPackag
     			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
 	    			if (prefs.getBoolean(lpparam.packageName + "/preventService", false)) {
 	    				param.setResult(null);
-	    				return;
 	    			}
     			}
     		});
@@ -171,7 +170,7 @@ public class HackService implements IXposedHookZygoteInit, IXposedHookLoadPackag
 	    				if (multiplier == 0) {
 //		    				XposedBridge.log("Prevented " + lpparam.packageName + " to setAlarm(" + param.args[0] + ", " + param.args[1] + ", " + param.args[2] + ")");
 		    				param.setResult(null);
-		    				return;
+
 	    				} else {
 	    					long now = now((Integer)param.args[0]);
 	    					long at = (Long)param.args[1];
@@ -195,7 +194,7 @@ public class HackService implements IXposedHookZygoteInit, IXposedHookLoadPackag
 	    				if (multiplier == 0) {
 //	    					XposedBridge.log("Prevented " + lpparam.packageName + " to setRepeatingAlarm(" + param.args[0] + ", " + param.args[1] + ", " + param.args[2] + ", " + param.args[3] + ")");
 	    					param.setResult(null);
-	    					return;
+
 	    				} else {
 	    					long now = now((Integer)param.args[0]);
 	    					long at = (Long)param.args[1];
@@ -223,7 +222,7 @@ public class HackService implements IXposedHookZygoteInit, IXposedHookLoadPackag
 	    				if (multiplier == 0) {
 //							XposedBridge.log("Prevented " + lpparam.packageName + " to setInexactRepeatingAlarm(" + param.args[0] + ", " + param.args[1] + ", " + param.args[2] + ", " + param.args[3] + ")");
 							param.setResult(null);
-							return;
+
 	    				} else {
 	    					long now = now((Integer)param.args[0]);
 	    					long at = (Long)param.args[1];
@@ -245,16 +244,16 @@ public class HackService implements IXposedHookZygoteInit, IXposedHookLoadPackag
     			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
 	    			if (prefs.getBoolean(lpparam.packageName + "/preventWakeLock", false)) {
 	    				param.setResult(null);
-	    				return;
+
 	    			}
 				}
     		});
-    		XposedHelpers.findAndHookMethod(wakeLockClass, "acquire", Long.class, new XC_MethodHook() {
+    		XposedHelpers.findAndHookMethod(wakeLockClass, "acquire", long.class, new XC_MethodHook() {
 				@Override
     			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
 	    			if (prefs.getBoolean(lpparam.packageName + "/preventWakeLock", false)) {
 	    				param.setResult(null);
-	    				return;
+
 	    			}
 				}
     		});
@@ -281,9 +280,7 @@ public class HackService implements IXposedHookZygoteInit, IXposedHookLoadPackag
     }
 
 	
-	public enum Mode {
-        SUPPRESS, DEFAULT, OVERRIDE;
-    }
+
 	
 	private static boolean shouldPackagePlaySound(Context context, String packageName) {
         if (!packageName.equals("android")) {
